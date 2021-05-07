@@ -5,6 +5,9 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+// 添加事件总线 用于监听Goodsitem图片加载完成
+Vue.prototype.$bus = new Vue()
+
 new Vue({
   router,
   store,

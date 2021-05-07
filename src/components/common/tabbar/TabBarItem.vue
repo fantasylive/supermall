@@ -42,9 +42,10 @@
     methods: {
       /*
         监听该组件的点击事件，进行路由跳转
+        添加.catch()防止重复点击同一个item报错的问题
       */
       itemClick() {
-        this.$router.replace(this.path)
+        this.$router.replace(this.path).catch(err => err.message)
       }
     }
   }

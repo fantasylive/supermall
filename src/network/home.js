@@ -4,5 +4,18 @@ import {request} from './request'
 export function getHomeMultidata() {
     return request({
         url: '/home/multidata'
+        // url:'/test/getBanners'
+    })
+}
+
+// 请求Home页面的分类数据
+export function getHomeData(type, page) {
+    return request({
+        url: '/home/data',
+        // url:'/test/getGoods',
+        params: {
+            type,
+            page
+        }
     })
 }
