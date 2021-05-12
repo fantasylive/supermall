@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsItem.show.img" alt="" @load="itemImageLoad"/>
+    <img :src="itemImage" alt="" @load="itemImageLoad"/>
     <div class="goods-item-text">
       <p>{{ goodsItem.title }}</p>
       <span class="price">{{ goodsItem.price }}</span>
@@ -20,6 +20,12 @@ export default {
       }
     }
   },
+  computed: {
+    // 首页数据和商品推荐数据的格式不同
+    itemImage() {
+      return this.goodsItem.image || this.goodsItem.show.img
+    }
+  },
   methods: {
     itemImageLoad() {
       // 使用事件总线在图片加载完成时将事件发送出去
@@ -27,7 +33,7 @@ export default {
     },
     // 点击时跳转到详情页面并传递商品iid
     itemClick() {
-      this.$router.push('/detail/' + this.goodsItem.iid)
+      this.$router.push('/detail/' + this.goodsItem.iid).catch(err => err)
     }
   }
 }

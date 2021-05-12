@@ -31,13 +31,14 @@
       <goods-list :goods-list="showGoods" />
     </scroll>
 
-    <back-top @click.native="backClick" v-show="isShowBackTop" />
+    <back-top @click.native="backTop" v-show="isShowBackTop" />
   </div>
 </template>
 
 <script>
 import { getHomeMultidata, getHomeData } from 'network/home'
-import { debounce } from 'common/utils'
+// import { debounce } from 'common/utils'
+import { itemListenerMixin, backTopMixin } from 'common/mixin'
 
 import NavBar from 'components/common/navbar/NavBar'
 import HomeSwiper from './childComps/HomeSwiper'
@@ -46,7 +47,7 @@ import FeatureView from './childComps/FeatureView'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
-import BackTop from 'components/content/backTop/BackTop'
+// import BackTop from 'components/content/backTop/BackTop'
 
 export default {
   name: 'Home',
@@ -58,8 +59,9 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop
+    // BackTop
   },
+  mixins: [itemListenerMixin, backTopMixin],
   // 将请求过来的数据保存
   data() {
     return {
@@ -72,7 +74,7 @@ export default {
       },
       currentType: 'pop',
       // 是否显示回到顶部组件
-      isShowBackTop: false,
+      // isShowBackTop: false,
       // tabControl的offsetTop
       tabOffsetTop: 0,
       // 吸顶的tabControl是否显示
@@ -98,12 +100,14 @@ export default {
   },
   // 生命周期函数 在组件挂载完成后触发
   mounted() {
-    // 进行防抖
-    const refresh = debounce(this.$refs.scroll.refresh, 200)
-    // 监听GoodsListItem图片是否加载完成
-    this.$bus.$on('itemImageLoad', () => {
-      refresh()
-    })
+    // 防抖在mixin中
+
+    // // 进行防抖
+    // const refresh = debounce(this.$refs.scroll.refresh, 200)
+    // // 监听GoodsListItem图片是否加载完成
+    // this.$bus.$on('itemImageLoad', () => {
+    //   refresh()
+    // })
   },
   // 组件活跃时执行
   activated() {
@@ -115,6 +119,8 @@ export default {
   deactivated() {
     // 离开时将页面滚动的位置保存
     this.saveScrollY = this.$refs.scroll.getScrollY()
+    // 组件不活跃时停止对对应事件的监听
+    this.$bus.$off('itemImgLoad', this.itemImgListener)
   },
   methods: {
     /*
@@ -139,13 +145,14 @@ export default {
       this.$refs.tabControl2.currentIndex = index
     },
     // 回到顶部
-    backClick() {
-      // 从scroll组件中调用scrollTo方法
-      this.$refs.scroll.scrollTo(0, 0)
-    },
+    // backTop() {
+    //   // 从scroll组件中调用scrollTo方法
+    //   this.$refs.scroll.scrollTo(0, 0)
+    // },
     // 回到顶部图标是否显示的判断/tabControl是否吸顶
     contentScroll(position) {
-      this.isShowBackTop = -position.y > 1000
+      // this.isShowBackTop = -position.y > 1000
+      this.listenShowBackTop(position)
       this.isTabFixed = -position.y > this.tabOffsetTop
     },
     // 上拉加载更多
