@@ -1,6 +1,7 @@
 # supermall
 ### 基于vue.js的移动端商城项目
 ![image](https://github.com/fantasylive/learngit/blob/master/img/home.png)
+
 ![image](https://github.com/fantasylive/learngit/blob/master/img/detail.png)
 
 ## Project setup
