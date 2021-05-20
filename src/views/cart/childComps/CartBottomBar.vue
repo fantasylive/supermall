@@ -50,7 +50,7 @@ export default {
       if (this.cartList.length === 0) {
         return false;
       } else {
-        return !this.cartList.every((item) => !item.checked);
+        return this.cartList.every((item) => item.checked);
       }
     },
   },
